@@ -1,19 +1,41 @@
+'use client';
+
 import { useState } from 'react';
 
 import Image from "next/image";
 
 import trash from "@/assets/trash.png";
+import { CreateTaskModal } from "@/components/CreateTaskModal";
 
 import styles from "./styles.module.scss";
 
 export function ListTable() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  function handleModalClose() {
+  function handleModalConfirm() {
+		setModalIsOpen(false);
+		alert('confirmado');
+	}
+
+	function handleModalClose() {
 		setModalIsOpen(false);
 	}
 
+  function renderModalContent() {
+		return (
+			<div className={styles["modal-form"]}>
+				<form onSubmit={() => handleModalConfirm}>
+					<div className={styles.field}>
+						<label htmlFor="input-title">Título</label>
+						<input type="text" id="input-title" placeholder="Digite" />
+					</div>
+				</form>
+			</div>
+		);
+	}
+
   return (
+    <>
        <main className={styles.container}>
 
         <div className={styles["list-container"]}>
@@ -65,9 +87,19 @@ export function ListTable() {
         </div>
 
         <div className={styles["button-container"]}>
-          <button className={styles["add-task"]}>Adicionar nova tarefa</button>
+          <button className={styles["add-task"]} onClick={() => setModalIsOpen(true)}>Adicionar nova tarefa</button>
         </div>
 
       </main>
+
+      <CreateTaskModal
+        isOpen={modalIsOpen}
+        title="Nova tarefa"
+        onClose={handleModalClose}
+        onConfirm={handleModalConfirm}
+        >
+        {renderModalContent()}
+      </CreateTaskModal>
+    </>
   );
 }
