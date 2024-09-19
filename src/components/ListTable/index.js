@@ -13,10 +13,15 @@ export function ListTable() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalType, setModalType] = useState("");
   const [taskList, setTaskList] = useState([]);
+  const [taskToDelete, setTaskToDelete] = useState(null);
 
-  function handleModalType(type = "") {
+  function handleModalType(type = "", index = null) {
     setModalIsOpen(true);
     setModalType(type);
+
+    if (type === "delete") {
+      setTaskToDelete(index);
+    }
   }
 
   function handleModalConfirm(event) {
@@ -59,6 +64,16 @@ export function ListTable() {
     );
   }
 
+  function handleModalDelete() {
+    console.log("aqui");
+    if (taskToDelete !== null) {
+      setTaskList(prevTaskList => prevTaskList.filter((_, index) => index !== taskToDelete));
+      setTaskToDelete(null); // Limpa o estado após deletar
+    }
+    setModalIsOpen(false);
+    setModalType("");
+  }
+
   return (
     <>
        <main className={styles.container}>
@@ -82,7 +97,7 @@ export function ListTable() {
                     src={trash}
                     alt="lixo"
                     className={styles.icon}
-                    onClick={() => handleModalType("delete")}
+                    onClick={() => handleModalType("delete", index)}
                   />
                 </li>)
               }) : <p className={styles["list-empty"]}>Nenhuma tarefa para hoje</p>}
@@ -110,7 +125,7 @@ export function ListTable() {
                     src={trash}
                     alt="lixo"
                     className={styles.icon}
-                    onClick={() => handleModalType("delete")}
+                    onClick={() => handleModalType("delete", index)}
                   />
                 </li>)
               }) : <p className={styles["list-empty"]}>Nenhuma tarefa realizada hoje</p>}
@@ -129,7 +144,7 @@ export function ListTable() {
         isOpen={modalIsOpen}
         title={modalType === 'delete' ? "Deletar tarefa" : "Nova tarefa"}
         onClose={handleModalClose}
-        onConfirm={handleModalConfirm}
+        onConfirm={modalType === 'delete' ? handleModalDelete : handleModalConfirm}
         >
           {modalType === 'delete' ? renderModalContentDeleteTask() : renderModalContentCreateTask()}
       </Modal>

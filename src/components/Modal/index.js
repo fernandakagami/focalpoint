@@ -6,8 +6,6 @@ export function Modal({ children, title, isOpen, onClose, onConfirm, ...props}) 
 	}
 
 	function handleConfirmClick(event) {
-		event.preventDefault();
-		console.log(event);
 		onConfirm(event);
 	}
 
