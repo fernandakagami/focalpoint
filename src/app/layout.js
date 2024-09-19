@@ -1,16 +1,12 @@
-import localFont from "next/font/local";
-import "./globals.css";
+import "./globals.scss";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
+import { Inter_Tight } from 'next/font/google';
+
+const interTight = Inter_Tight({
+  subsets: ['latin'],
+  display: 'swap',
 });
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
+
 
 export const metadata = {
   title: "Create Next App",
@@ -19,8 +15,8 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html lang="pt">
+      <body className={interTight.className}>
         {children}
       </body>
     </html>
