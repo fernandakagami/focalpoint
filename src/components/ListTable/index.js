@@ -51,6 +51,14 @@ export function ListTable() {
     );
 	}
 
+  function handleTaskStatusChange(index) {
+    setTaskList(prevTaskList =>
+      prevTaskList.map((task, i) =>
+        i === index ? { ...task, isFinished: !task.isFinished } : task
+      )
+    );
+  }
+
   return (
     <>
        <main className={styles.container}>
@@ -60,11 +68,11 @@ export function ListTable() {
             <h3 className={styles.title}>Suas tarefas de hoje</h3>
 
             <ul>
-              {taskList.map((task, index) => {
+              {taskList.some(task => !task.isFinished) ?  taskList.map((task, index) => {
                 if (task.isFinished) return null;
                 return (<li key={index}>
                   <label className={styles["checkbox-container"]}>
-                    <input type="checkbox" />
+                    <input type="checkbox"  onChange={() => handleTaskStatusChange(index)}  />
                     <span className={styles.checkmark}></span>
                   </label>
                   <p>{task.title}</p>
@@ -77,19 +85,22 @@ export function ListTable() {
                     onClick={() => handleModalType("delete")}
                   />
                 </li>)
-              })}
+              }) : <p className={styles["list-empty"]}>Nenhuma tarefa para hoje</p>}
             </ul>
           </section>
 
-          <section>
+          <section className={styles.section}>
             <h3 className={styles.title}>Tarefas realizadas</h3>
 
             <ul>
-              {taskList.map((task, index) => {
+              {taskList.some(task => task.isFinished) ? taskList.map((task, index) => {
                 if (!task.isFinished) return null;
                 return (<li key={index}>
                   <label className={styles["checkbox-container"]}>
-                    <input type="checkbox" />
+                    <input
+                      type="checkbox"
+                      checked={task.isFinished}
+                    />
                     <span className={styles.checkmark}></span>
                   </label>
                   <p>{task.title}</p>
@@ -102,7 +113,7 @@ export function ListTable() {
                     onClick={() => handleModalType("delete")}
                   />
                 </li>)
-              })}
+              }) : <p className={styles["list-empty"]}>Nenhuma tarefa realizada hoje</p>}
             </ul>
           </section>
         </div>
