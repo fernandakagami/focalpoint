@@ -5,8 +5,10 @@ export function Modal({ children, title, isOpen, onClose, onConfirm, ...props}) 
 		onClose();
 	}
 
-	function handleConfirmClick() {
-		onConfirm();
+	function handleConfirmClick(event) {
+		event.preventDefault();
+		console.log(event);
+		onConfirm(event);
 	}
 
 	if (!isOpen) return null;
@@ -18,16 +20,22 @@ export function Modal({ children, title, isOpen, onClose, onConfirm, ...props}) 
 					<h2>{title}</h2>
 				</header>
 
-				{children}
+				<div className={styles["modal-form"]}>
+					<form onSubmit={handleConfirmClick}>
 
-				<div className={styles.footer} >
-					<button onClick={handleConfirmClick} className={props.confirmText === "Deletar" ? styles['button-delete'] : styles['button-confirm']} >
-						{props.confirmText}
-					</button>
+						{children}
 
-					<button onClick={handleCloseClick} className={styles['button-cancel']}>
-						Cancelar
-					</button>
+						<div className={styles.footer} >
+						<button type="submit" className={props.confirmText === "Deletar" ? styles['button-delete'] : styles['button-confirm']} >
+							{props.confirmText}
+						</button>
+
+						<button onClick={handleCloseClick} className={styles['button-cancel']}>
+							Cancelar
+						</button>
+					</div>
+					</form>
+
 				</div>
 			</div>
 		</div>
