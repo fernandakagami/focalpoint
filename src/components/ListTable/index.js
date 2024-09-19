@@ -5,29 +5,48 @@ import { useState } from 'react';
 import Image from "next/image";
 
 import trash from "@/assets/trash.png";
-import { CreateTaskModal } from "@/components/CreateTaskModal";
+import { Modal } from "@/components/Modal";
 
 import styles from "./styles.module.scss";
 
 export function ListTable() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [modalType, setModalType] = useState("");
+
+  function handleModalType(type = "") {
+    setModalIsOpen(true);
+    setModalType(type);
+  }
 
   function handleModalConfirm() {
 		setModalIsOpen(false);
-		alert('confirmado');
+    setModalType("");
 	}
 
 	function handleModalClose() {
 		setModalIsOpen(false);
+    setModalType("");
 	}
 
-  function renderModalContent() {
+  function renderModalContentCreateTask() {
 		return (
 			<div className={styles["modal-form"]}>
 				<form onSubmit={() => handleModalConfirm}>
 					<div className={styles.field}>
 						<label htmlFor="input-title">Título</label>
 						<input type="text" id="input-title" placeholder="Digite" />
+					</div>
+				</form>
+			</div>
+		);
+	}
+
+  function renderModalContentDeleteTask() {
+		return (
+			<div className={styles["modal-form"]}>
+				<form onSubmit={() => handleModalConfirm}>
+					<div className={styles.field}>
+						<p>Tem certeza que você deseja deletar essa tarefa?</p>
 					</div>
 				</form>
 			</div>
@@ -43,13 +62,20 @@ export function ListTable() {
             <h3 className={styles.title}>Suas tarefas de hoje</h3>
             <ul>
 
-              <li className={styles["date-information"]}>
+              <li>
                 <label className={styles["checkbox-container"]}>
                   <input type="checkbox" />
                   <span className={styles.checkmark}></span>
                 </label>
                 <p>Lavar as mãos</p>
-                <Image  width={18} height={20} src={trash} alt="lixo" />
+                <Image
+                  width={18}
+                  height={20}
+                  src={trash}
+                  alt="lixo"
+                  className={styles.icon}
+                  onClick={() => handleModalType("delete")}
+                />
               </li>
 
               <li className={styles["date-information"]}>
@@ -87,19 +113,20 @@ export function ListTable() {
         </div>
 
         <div className={styles["button-container"]}>
-          <button className={styles["add-task"]} onClick={() => setModalIsOpen(true)}>Adicionar nova tarefa</button>
+          <button className={styles["add-task"]} onClick={() => handleModalType()}>Adicionar nova tarefa</button>
         </div>
 
       </main>
 
-      <CreateTaskModal
+      <Modal
+        confirmText={modalType === 'delete' ? 'Deletar' : 'Adicionar'}
         isOpen={modalIsOpen}
-        title="Nova tarefa"
+        title={modalType === 'delete' ? "Deletar tarefa" : "Nova tarefa"}
         onClose={handleModalClose}
         onConfirm={handleModalConfirm}
         >
-        {renderModalContent()}
-      </CreateTaskModal>
+          {modalType === 'delete' ? renderModalContentDeleteTask() : renderModalContentCreateTask()}
+      </Modal>
     </>
   );
 }
