@@ -1,0 +1,31 @@
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  gap: 0.4rem;
+}
+
+.welcome {
+  font-size: 1rem;
+  color: --var(--black);
+  font-weight: 500;
+  line-height: 19px;
+}
+
+.date-information {
+  font-size: 1rem;
+  color: --var(--gray-400);
+  font-weight: 400;
+  line-height: 19px;
+}
+
+@media (max-width: 600px) {
+  /* Estilos para dispositivos móveis */
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+}

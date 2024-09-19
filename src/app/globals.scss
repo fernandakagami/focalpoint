@@ -1,7 +1,7 @@
 :root {
   --white: #ffffff;
 
-  --black: #101828;
+  --black: #000000;
 
   --blue-100: #A0DCF6;
   --blue-200: #53C0F0;
@@ -10,11 +10,11 @@
   --gray-100: #F7F9FD;
   --gray-200: #E7EEFB;
   --gray-300: #D7DDE9;
+  --gray-400: rgba(var(--black), 0.54);
 
   --red-100: #F05353;
   --red-200: #D30707;
 
-  --gray-hover: rgba(var(--black), 0.54);
 }
 
 html,
